@@ -2,6 +2,16 @@
 
 ## Unreleased
 
+Security review before the public release:
+
+- Client address: `X-Forwarded-For` is believed only from a proxy on the same machine or a private network, and only its last entry. A client reaching the app directly can no longer pick the address that sign-in throttling and the audit log use.
+- Vendor research: the address is checked again at the moment of connecting, so DNS rebinding cannot point the server at an internal address such as a cloud metadata service.
+- Model provider: `LLM_BASE_URL` must be `https://` unless the model runs on the same machine; the server refuses to start otherwise.
+- Files the server writes (records, uploads, databases, backups) are readable by its own user only.
+- The failed sign-in table can no longer grow without limit.
+- Signing out (accounts mode) ends every session that person has, so a copied cookie stops working.
+- SECURITY.md: an Encryption section covering data in transit and at rest.
+
 - README: requirements, and how to install and run on a laptop, with Docker and on a server.
 - `docs/INSTALL.md`: install on any Linux server (systemd, Caddy, per-person accounts, first admin, updates).
 - Docs: the Azure guide uses one settings-file path throughout; a test checks that links between docs resolve.
@@ -20,6 +30,6 @@ First public release, as open source under the MIT license. Beta: one instance p
 - Tamper-evident audit log (HMAC seal chain in SQLite).
 - Optional email (vendor links, invites, weekly digest), nightly backups and restore, a full export, sample data removal and delete-all.
 - Glass interface that follows the system light or dark setting; no page loads anything from another host.
-- 283 tests.
+- 281 tests.
 
 Earlier history is in the git log.

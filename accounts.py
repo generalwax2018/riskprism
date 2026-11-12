@@ -409,6 +409,12 @@ def change_password(uid: int, current: str, new: str, new2: str, code: str) -> N
         con.execute("UPDATE users SET pw_hash = ?, totp_last_step = ?, session_ver = session_ver + 1 WHERE id = ?", (hash_password(new), step, uid))
 
 
+def end_sessions(uid: int) -> None:
+    """Sign this person out everywhere: every session cookie issued before now stops working."""
+    with _db(write=True) as con:
+        con.execute("UPDATE users SET session_ver = session_ver + 1 WHERE id = ?", (int(uid),))
+
+
 def _active_admins(con) -> int:
     n = con.execute("SELECT COUNT(*) FROM users WHERE is_admin = 1 AND status = 'active'").fetchone()[0]
     return n + len(config.ADMINS)

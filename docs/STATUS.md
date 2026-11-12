@@ -41,7 +41,7 @@ Roadmap: [docs/DESIGN_QUEUE.md](DESIGN_QUEUE.md).
 - Authenticator secrets encrypted at rest with a key derived from the server secret
 - Clean-install pilot test: starts the real server on an empty data folder, walks the main flows, then removes sample data, exports and deletes everything
 - Analyst pages and vendor portal share the glass look; light and dark; responsive down to phone width
-- Tests (`python -m unittest discover -s tests -v`, 283 tests), `Dockerfile`, `.env.example`, Azure guide, `SECURITY.md`
+- Tests (`python -m unittest discover -s tests -v`, 297 tests), `Dockerfile`, `.env.example`, Azure guide, `SECURITY.md`
 
 ## Queued (not built yet)
 - Portfolio Clock / Grant / Spark glyphs and red-on-disagreement

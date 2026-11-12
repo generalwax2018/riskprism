@@ -108,7 +108,7 @@ def _now() -> str:
 
 
 def _qid(text: str) -> str:
-    return "Q-" + hashlib.sha1(text.encode("utf-8")).hexdigest()[:8]
+    return "Q-" + hashlib.sha1(text.encode("utf-8"), usedforsecurity=False).hexdigest()[:8]
 
 
 def _fact(value, unknown="unknown") -> str:

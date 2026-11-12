@@ -6,6 +6,8 @@ Cloud: set ENTROPY_HOST, ENTROPY_AUTH and ENTROPY_BASE_URL (see config.py and do
 """
 from __future__ import annotations
 
+import ipaddress
+import os
 import re
 import sys
 from datetime import date, datetime, timezone
@@ -284,8 +286,7 @@ class Handler(BaseHTTPRequestHandler):
 
     # ------------------------------------------------------------ helpers
     def _ip(self):
-        fwd = (self.headers.get("X-Forwarded-For") or "").split(",")[0].strip()
-        return fwd or self.client_address[0]
+        return client_ip(self.client_address[0], self.headers.get("X-Forwarded-For") or "")
 
     def _body(self, limit):
         if (self.headers.get("Transfer-Encoding") or "").lower() == "chunked":
@@ -1103,6 +1104,9 @@ class Handler(BaseHTTPRequestHandler):
             return self._integrations_post(path, who, fields, ip)
 
         if path == "/logout":
+            me = auth.current_user(self.headers)
+            if me:  # accounts mode: the old cookie stops working even if someone copied it
+                accounts.end_sessions(me["id"])
             audit.log(who, "logout", "", "", ip)
             return self._redirect("/login", {"Set-Cookie": auth.clear_cookie_header()})
 
@@ -1652,11 +1656,33 @@ class Handler(BaseHTTPRequestHandler):
         return self._login_page(401, "That password is not right.")
 
 
+def client_ip(peer: str, forwarded: str) -> str:
+    """The address to throttle and audit. X-Forwarded-For is believed only when the request came from a reverse
+    proxy on this machine or a private network (Caddy, nginx, App Service), and then only its last entry, the
+    one that proxy added. A client talking to the app directly cannot choose its own address."""
+    try:
+        p = ipaddress.ip_address(peer.split("%")[0])
+    except ValueError:
+        return peer
+    if forwarded and (p.is_loopback or p.is_private):
+        last = forwarded.split(",")[-1].strip()
+        if last.startswith("["):
+            last = last[1:].split("]")[0]
+        elif last.count(":") == 1:
+            last = last.split(":")[0]
+        try:
+            return str(ipaddress.ip_address(last))
+        except ValueError:
+            pass
+    return peer
+
+
 def main():
     try:  # startup lines reach journalctl or a log file straight away, not when a buffer fills
         sys.stdout.reconfigure(line_buffering=True)
     except (AttributeError, ValueError):
         pass
+    os.umask(0o077)  # vendor records, uploads, databases and backups: readable by this service's user only
     problems = config.check_startup()
     if problems:
         for p in problems:

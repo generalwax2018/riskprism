@@ -18,6 +18,7 @@ import os
 import re
 import urllib.error
 import urllib.request
+from urllib.parse import urlparse
 
 import config
 
@@ -37,6 +38,20 @@ def settings() -> dict:
     except ValueError:
         timeout = 180
     return {"base": base, "key": key, "model": model, "timeout": timeout}
+
+
+def transport_problem(base: str | None = None) -> str:
+    """Prompts carry vendor answers and the API key, so they only travel over https, except to a model on this machine."""
+    base = settings()["base"] if base is None else base
+    if not base:
+        return ""
+    u = urlparse(base)
+    if u.scheme == "https" and u.hostname:
+        return ""
+    if u.scheme == "http" and u.hostname and config.is_loopback(u.hostname):
+        return ""
+    return ("LLM_BASE_URL must start with https:// (http is allowed only for a model on this machine, such as Ollama "
+            "on 127.0.0.1). Got %s" % base[:80])
 
 
 def enabled() -> bool:
@@ -68,6 +83,8 @@ def chat(system: str, user: str, *, max_tokens: int = 8000, temperature: float =
     s = settings()
     if not configured():
         raise LLMError("No model is configured. Set LLM_BASE_URL, LLM_API_KEY and LLM_MODEL (or XAI_API_KEY).")
+    if transport_problem(s["base"]):
+        raise LLMError(transport_problem(s["base"]))
     payload = {
         "model": s["model"], "temperature": temperature, "max_tokens": max_tokens,
         "messages": [{"role": "system", "content": system}, {"role": "user", "content": user}],

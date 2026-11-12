@@ -17,6 +17,7 @@ Page text is untrusted: it is data for the model, never instructions.
 """
 from __future__ import annotations
 
+import http.client
 import ipaddress
 import re
 import socket
@@ -88,7 +89,68 @@ class _SafeRedirect(urllib.request.HTTPRedirectHandler):
         return super().redirect_request(req, fp, code, msg, headers, newurl)
 
 
-_OPENER = urllib.request.build_opener(_SafeRedirect)
+def _proxy_endpoints() -> set[tuple[str, int]]:
+    """(host, port) of the outbound proxies urllib will use for http and https, if any."""
+    out = set()
+    for scheme in ("http", "https"):
+        u = urlparse(urllib.request.getproxies().get(scheme) or "")
+        if u.hostname:
+            out.add((u.hostname.lower(), u.port or (443 if u.scheme == "https" else 80)))
+    return out
+
+
+def _guarded_connection(address, timeout=socket._GLOBAL_DEFAULT_TIMEOUT, source_address=None, *args, **kwargs):
+    """Connect only to a public address, checked at the moment of connecting. public_url() checks the name first,
+    but the name is looked up again to connect, and a hostile DNS server can answer differently the second time
+    (DNS rebinding). A configured outbound proxy is the one exception: it does the lookup itself."""
+    host, port = address[0], address[1]
+    if (str(host).lower(), int(port)) in _proxy_endpoints():
+        return socket.create_connection(address, timeout, source_address)
+    try:
+        infos = socket.getaddrinfo(host, port, type=socket.SOCK_STREAM)
+    except (socket.gaierror, UnicodeError):
+        raise ResearchError("%s does not resolve." % host)
+    for family, _t, _p, _c, sockaddr in infos:
+        addr = ipaddress.ip_address(sockaddr[0].split("%")[0])
+        if not addr.is_global or addr.is_multicast:
+            raise ResearchError("%s points at a private or internal address, so it will not be fetched." % host)
+    last = None
+    for family, socktype, proto, _c, sockaddr in infos:
+        sock = socket.socket(family, socktype, proto)
+        try:
+            if timeout is not socket._GLOBAL_DEFAULT_TIMEOUT:
+                sock.settimeout(timeout)
+            sock.connect(sockaddr)
+            return sock
+        except OSError as e:
+            last = e
+            sock.close()
+    raise last or OSError("could not connect to %s" % host)
+
+
+class _GuardedHTTPConnection(http.client.HTTPConnection):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self._create_connection = _guarded_connection  # http.client sets this per instance
+
+
+class _GuardedHTTPSConnection(http.client.HTTPSConnection):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self._create_connection = _guarded_connection
+
+
+class _GuardedHTTP(urllib.request.HTTPHandler):
+    def http_open(self, req):
+        return self.do_open(_GuardedHTTPConnection, req)
+
+
+class _GuardedHTTPS(urllib.request.HTTPSHandler):
+    def https_open(self, req):
+        return self.do_open(_GuardedHTTPSConnection, req, context=self._context)
+
+
+_OPENER = urllib.request.build_opener(_SafeRedirect, _GuardedHTTP, _GuardedHTTPS)
 
 
 def fetch(url: str) -> tuple[str, str]:

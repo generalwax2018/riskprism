@@ -104,7 +104,7 @@ def import_domains(text: str, filename: str, by: str) -> int:
 
 
 def _item_id(kind: str, key: str) -> str:
-    return "sh-" + hashlib.sha1(("%s|%s" % (kind, key.lower())).encode()).hexdigest()[:10]
+    return "sh-" + hashlib.sha1(("%s|%s" % (kind, key.lower())).encode(), usedforsecurity=False).hexdigest()[:10]
 
 
 def _vendor_match(name: str, vendors: list[dict]) -> dict | None:

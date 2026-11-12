@@ -163,7 +163,7 @@ The git repository uses one branch, `main`. To deploy:
 cd /home/azureuser/riskprism && git pull && python3 -m unittest discover -s tests && sudo systemctl restart entropy
 ```
 
-Run the tests before the restart. They use a temporary data folder, not the live one. The suite is 283 tests; `tests/test_pilot.py` starts the real server on an empty data folder. If a test fails, do not restart; fix it first or `git checkout` the previous commit. Templates are read on each request, but Python modules load once, so the restart is needed after any `.py` change.
+Run the tests before the restart. They use a temporary data folder, not the live one. The suite is 297 tests; `tests/test_pilot.py` starts the real server on an empty data folder. If a test fails, do not restart; fix it first or `git checkout` the previous commit. Templates are read on each request, but Python modules load once, so the restart is needed after any `.py` change.
 
 ### Switching a VM to per-person accounts
 

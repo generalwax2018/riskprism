@@ -86,6 +86,9 @@ def check_startup() -> list[str]:
     problems.extend(mailer.startup_problems())
     import ops
     problems.extend(ops.startup_problems())
+    import llm
+    if AI_ENABLED and llm.transport_problem():
+        problems.append(llm.transport_problem())
     if AUTH_MODE == "password" and len(ANALYST_PASSWORD) < 12:
         problems.append("ENTROPY_AUTH=password needs ENTROPY_ANALYST_PASSWORD of at least 12 characters.")
     if AUTH_MODE == "none" and not is_loopback(HOST) and not ALLOW_INSECURE:

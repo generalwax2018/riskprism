@@ -33,6 +33,30 @@ Logic fixes that affect risk decisions, not only security:
 - Resolved follow-ups no longer reopen themselves when the answers are re-scanned.
 - The demo portfolio's residual scores now use `controls.demo.csv`.
 
+## Encryption
+
+**In transit**
+
+| Connection | Protection |
+|---|---|
+| Browser to RiskPrism | HTTPS from Caddy, nginx or App Service in front of the app (the app itself never listens on a public address without sign-in). With an `https://` `ENTROPY_BASE_URL` it sends `Strict-Transport-Security` and marks the session cookie `Secure`, `HttpOnly` and `SameSite=Strict`. |
+| Model provider (AI questionnaire) | HTTPS only. Plain `http://` is accepted only for a model on the same machine (Ollama on 127.0.0.1); the server refuses to start otherwise. |
+| ServiceNow, Jira, single sign-on | HTTPS only, with certificate checks. Other addresses are refused. |
+| Email | STARTTLS (default) or TLS with certificate checks. Unencrypted SMTP is accepted only for a mail server on the same machine. |
+| Vendor websites read for research | Public pages only. The address is checked when it is entered and again at the moment of connecting, so a vendor's DNS cannot point the server at an internal address. |
+
+**At rest**
+
+| What | How it is stored |
+|---|---|
+| Passwords | scrypt hashes with a random salt each. |
+| Authenticator (TOTP) secrets | Encrypted with a key derived from the server secret (HMAC-SHA256 keystream, encrypt-then-MAC). A database copied without `secret.key` cannot produce codes. |
+| Vendor links and setup links | Only a SHA-256 hash is stored, so the files cannot be used to open a form. |
+| Sessions, CSRF tokens, sign-in state | Signed with HMAC-SHA256 from the server secret. In accounts mode, signing out, changing a password, a reset or disabling the account ends every session that person has, so a copied cookie stops working. |
+| Audit log | Each entry sealed with HMAC-SHA256 and chained to the one before it (see below). |
+| `secret.key` | Created with permissions 600 and never included in backups. |
+| Vendor records, uploaded documents, the database, backups | Plain files, written with permissions 600 (the server sets `umask 077`). Encrypt the disk or share they live on: Azure managed disks and Azure Files are encrypted at rest by default; on other hosts use BitLocker, LUKS or your provider's volume encryption. Python's standard library has no AES, and the server would hold the key anyway, so disk encryption gives the same protection against a stolen disk or backup without a dependency. |
+
 ## Audit log
 
 Entries live in the `audit` table of `DATA_DIR/riskprism.db`. Each entry is sealed with an HMAC over its own fields and the seal of the entry before it, keyed from the server secret (`ENTROPY_SECRET` or `secret.key`). Database triggers refuse UPDATE and DELETE on the table. Per-vendor reads (the Activity tab) use an index.
@@ -83,7 +107,7 @@ Open a private issue or email the repository owner. Do not put vendor data in a 
 
 - The Azure Blob and Easy Auth code paths have not been run against a live Azure account. They are small, but test them before you rely on them.
 - Login throttling and CSRF secrets are per process and reset on restart if `ENTROPY_SECRET` is not set and the data folder is read-only.
-- `X-Forwarded-For` is trusted for the audit-log IP and throttling. That is right behind App Service or Caddy, and spoofable if the app is exposed directly.
+- `X-Forwarded-For` is believed only from a proxy on the same machine or a private network (Caddy, nginx, App Service), and only its last entry, the one that proxy added. A client talking to the app directly cannot choose the address used for the audit log and sign-in throttling.
 - Email is optional and needs your own SMTP server or service. Vendors use magic links, not SSO. Roles are admin, approver and view-only; any other signed-in analyst can do everything else.
 - Signed acceptances and audit entries are protected against edits and deletes by database triggers. Someone with shell access to the data folder can still alter the file. The audit seals show a change made without the server secret; a change made with it is caught only by comparing with a head seal you recorded outside the server.
 - JSON files do not scale past a few thousand vendors and do not support more than one writer process.
@@ -92,4 +116,4 @@ Open a private issue or email the repository owner. Do not put vendor data in a 
 
 `python -m unittest discover -s tests -v` starts the real server on a random port with a temporary data folder and checks each fix above (XSS, traversal, CSRF, upload limits, headers, token lifecycle, auth modes, follow-up logic), plus the risk acceptance rules (approval thresholds, tier floor, expiry, frozen rows, admin-only screens, no self-escalation).
 
-The suite is 283 tests. Later additions cover the page shell, light and dark appearance and no outside requests and the public-repo checks (`test_ui_shell.py`), per-person accounts and sign-in lockout (`test_accounts.py`), authenticator secrets encrypted at rest (`test_totp_at_rest.py`), OpenID Connect sign-in against a fake identity provider (`test_oidc.py`), `ENTROPY_AI=off` (`test_ai_off.py`), live access file import (`test_access_import.py`), declared vs observed scopes (`test_drift.py`), the findings worklist and ServiceNow and Jira push against local fakes (`test_findings.py`), the integrations, shadow IT and control objective layers (`test_integrations.py`, `test_data_layer.py`), the threat model and its exports (`test_threat_model.py`), view-only accounts and the sealed audit log (`test_roles_audit.py`), finding due dates, trend and the NERC CIP objectives (`test_deadlines.py`), email, backup and restore, export, sample-data removal and delete-all (`test_ops_mail.py`), regression tests for review findings such as the audit chain across processes and restore safety (`test_review_fixes.py`), and a clean-install pilot (`test_pilot.py`) that starts the real server as a separate process on an empty data folder, walks the main flows, and ends with remove sample data, export and delete all.
+The suite is 297 tests. Later additions cover the page shell, light and dark appearance and no outside requests and the public-repo checks (`test_ui_shell.py`), per-person accounts and sign-in lockout (`test_accounts.py`), authenticator secrets encrypted at rest (`test_totp_at_rest.py`), OpenID Connect sign-in against a fake identity provider (`test_oidc.py`), `ENTROPY_AI=off` (`test_ai_off.py`), live access file import (`test_access_import.py`), declared vs observed scopes (`test_drift.py`), the findings worklist and ServiceNow and Jira push against local fakes (`test_findings.py`), the integrations, shadow IT and control objective layers (`test_integrations.py`, `test_data_layer.py`), the threat model and its exports (`test_threat_model.py`), view-only accounts and the sealed audit log (`test_roles_audit.py`), finding due dates, trend and the NERC CIP objectives (`test_deadlines.py`), email, backup and restore, export, sample-data removal and delete-all (`test_ops_mail.py`), regression tests for review findings such as the audit chain across processes and restore safety (`test_review_fixes.py`), the open-source security review: client address trust, DNS rebinding, model transport and file permissions (`test_hardening.py`), and a clean-install pilot (`test_pilot.py`) that starts the real server as a separate process on an empty data folder, walks the main flows, and ends with remove sample data, export and delete all.

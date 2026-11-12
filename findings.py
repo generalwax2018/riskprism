@@ -68,7 +68,7 @@ def _now() -> str:
 
 
 def _key(*parts: str) -> str:
-    return "F-" + hashlib.sha1("|".join(parts).encode("utf-8")).hexdigest()[:10]
+    return "F-" + hashlib.sha1("|".join(parts).encode("utf-8"), usedforsecurity=False).hexdigest()[:10]
 
 
 # ------------------------------------------------------------------ collect
