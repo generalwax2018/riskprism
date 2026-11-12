@@ -1,0 +1,20 @@
+vendor,product,website,data_sensitivity,data_volume,access_level,criticality,ai_involvement,blast_radius,substitutability,regulatory,notes
+Microsoft 365,Email and files,https://microsoft.com,4,5,5,5,3,5,5,2,Core productivity; Copilot in scope
+Okta,Workforce identity,https://okta.com,4,4,5,5,1,5,4,2,SSO and MFA for the company
+AWS,Cloud infrastructure,https://aws.amazon.com,5,5,5,5,2,5,5,2,Production account and data stores
+GitHub,Source and Actions,https://github.com,4,4,4,5,3,4,4,1,Repos plus Copilot
+Stripe,Payments,https://stripe.com,5,4,4,5,2,4,5,5,PCI and checkout
+Salesforce,CRM,https://salesforce.com,4,5,4,5,4,4,4,2,Customer PII plus Einstein
+Zendesk,Support desk,https://zendesk.com,4,4,3,4,3,3,3,1,Ticket bodies include customer data
+Gusto,Payroll and HR,https://gusto.com,5,3,3,4,1,2,3,2,SSN and payroll
+Datadog,Observability,https://datadog.com,3,4,4,4,2,4,3,1,Prod telemetry; possible secrets in logs
+OpenAI,API and ChatGPT,https://openai.com,4,3,3,3,5,3,3,1,Prompts may include customer excerpts
+Otter.ai,Meeting notes,https://otter.ai,4,3,3,2,5,3,2,1,Workspace-connected AI notes
+Notion,Docs and wiki,https://notion.so,3,3,3,3,4,3,3,1,Internal docs plus AI
+HubSpot,Marketing automation,https://hubspot.com,3,4,3,3,3,3,2,1,Lead and customer contact data
+1Password,Password manager,https://1password.com,5,3,5,5,1,3,4,1,Secrets vault
+CrowdStrike,EDR,https://crowdstrike.com,3,4,4,5,2,4,3,1,Endpoint telemetry across fleet
+Slack,Chat,https://slack.com,3,4,3,4,3,4,3,1,Channels plus AI features
+Figma,Design,https://figma.com,2,2,2,3,1,2,3,0,Design files; little customer PII
+Mailchimp,Email campaigns,https://mailchimp.com,3,4,3,3,2,3,2,1,Marketing lists
+Unknown Shadow Copilot,Browser AI helper,https://example.invalid,4,2,3,2,5,2,1,1,No contract; staff pasted tickets into it

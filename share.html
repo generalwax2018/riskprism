@@ -1,0 +1,17 @@
+<header class="page-head"><div>
+  <h1>Send this {{kind}} form to {{vendor}}</h1>
+  <p class="lede">The link opens the vendor form only, needs no sign-in, and stops working on {{expires}} or as soon as a newer link is issued.</p>
+</div></header>
+{{!error}}{{!ok}}{{!hint}}
+<section class="card">
+  <div class="label">Vendor link</div>
+  <div class="linkbox"><code id="share-link">{{link}}</code><button class="btn ghost" type="button" data-copy="#share-link">Copy</button></div>
+  <p class="muted small">Treat it like a password: anyone with the link can answer for this vendor. The link is shown here once; issue a new one from the vendor page if you lose it.</p>
+</section>
+<section class="card">
+  <div class="card-head"><h2>Message to send</h2><button class="btn ghost small-btn" type="button" data-copy="#share-message">Copy message</button></div>
+  <p class="muted small">It says who is asking, why the form is on this address, the deadline and who to contact, so the vendor can tell it is genuine.</p>
+  <pre class="share-message" id="share-message">{{message}}</pre>
+  {{!send}}
+  <p><a class="btn ghost" href="/vendor/{{slug}}">Back to vendor</a></p>
+</section>

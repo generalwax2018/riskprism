@@ -1,0 +1,6 @@
+{
+  "restricted_models": ["deepseek", "qwen", "ernie", "baichuan", "yi-large", "doubao"],
+  "restricted_regions": ["russia", "iran", "north korea", "belarus"],
+  "required_region_if_critical": true,
+  "notes": "Default policy. Saved edits go to the data folder, not this file. Region entries match whole words, so write full names (add short codes like ru only if you want them matched)."
+}

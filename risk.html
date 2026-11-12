@@ -1,0 +1,27 @@
+<header class="page-head">
+  <div>
+    <h1>{{heading}}</h1>
+    <p class="lede">{{lede}}</p>
+  </div>
+  <div class="head-actions">{{!head_actions}}</div>
+</header>
+{{!notice}}
+
+<section class="kpis" aria-label="Summary">
+  <div class="kpi"><div class="label">Accepted now</div><div class="num">{{n_active}}</div></div>
+  <div class="kpi"><div class="label">High or critical</div><div class="num danger-text">{{n_high}}</div></div>
+  <div class="kpi"><div class="label">Expiring in 30 days</div><div class="num warn-text">{{n_soon}}</div></div>
+  <div class="kpi"><div class="label">Reopened in 90 days</div><div class="num">{{n_reopened}}</div></div>
+</section>
+
+<section class="card flush">
+  <div class="card-head padded"><h2>By org unit</h2><span class="muted small">Counts include the units underneath</span></div>
+  <div class="row head orow"><div>Unit</div><div>Accountable owner</div><div>Accepted</div><div>High+</div><div>Expiring</div><div>Reopened</div></div>
+  {{!unit_rows}}
+</section>
+
+<section class="card flush">
+  <div class="card-head padded"><h2>Acceptances</h2><span class="muted small">In force, plus any closed in the last 90 days</span></div>
+  <div class="row head rrow"><div>Vendor and detection</div><div>Tier</div><div>Signed by</div><div>Unit</div><div>Expires</div></div>
+  {{!acc_rows}}
+</section>

@@ -1,0 +1,25 @@
+<nav class="crumbs" aria-label="Breadcrumb"><a class="gold" href="/">Portfolio</a><span aria-hidden="true">/</span><a class="gold" href="/vendor/{{slug}}">{{vendor}}</a><span aria-hidden="true">/</span><span>AI questionnaire</span></nav>
+
+<header class="page-head"><div>
+  <h1>AI questionnaire</h1>
+  <p class="lede">The model reads what {{vendor}} publishes about security, writes up what it found, and drafts questions only for the gaps. Nothing reaches the vendor until you approve it.</p>
+</div><div class="head-actions"><span class="pill">{{model}}</span></div></header>
+{{!error}}{{!ok}}{{!status}}
+
+<section class="card">
+  <div class="card-head"><h2>1. Research</h2><span class="muted small">{{research_when}}</span></div>
+  <form method="post" action="/ai/draft" class="form">
+    <input type="hidden" name="slug" value="{{slug}}">
+    <label for="ai-url">Security or trust page (or the vendor's website)</label>
+    <input id="ai-url" name="source_url" maxlength="500" value="{{source_url}}" placeholder="https://vendor.com/security">
+    <label for="ai-context">How we plan to use it (optional, sharpens the questions)</label>
+    <textarea id="ai-context" name="context" maxlength="2000" placeholder="Example: developers will use it on our main monorepo, which has customer data in test fixtures.">{{context}}</textarea>
+    <p class="muted small">The vendor's published pages and your note above are sent to {{model}}. Pages are read from the vendor's own site only.</p>
+    <p><button class="btn primary" type="submit" {{!draft_disabled}}>{{draft_label}}</button></p>
+  </form>
+  {{!pages}}
+</section>
+
+{{!profile}}
+
+{{!questions}}

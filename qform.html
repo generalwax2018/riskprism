@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<meta name="robots" content="noindex, nofollow">
+<title>{{title}} · {{vendor}}</title>
+<link rel="stylesheet" href="/static/app.css">
+<script src="/static/app.js" defer></script>
+</head>
+<body class="portal">
+<header class="portal-bar">
+  <div class="portal-bar-inner">
+    <div class="portal-brand"><span class="app-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 3.5 19.5 19h-17z"></path><path d="M1.5 12.5h5.2"></path><path d="M15.2 11.6 22 9M15.8 13.4l6.2 2.2"></path></svg></span><span class="app-name">RiskPrism</span><span class="muted">{{title}}</span></div>
+    <div class="muted small">Confidential</div>
+  </div>
+</header>
+<div class="portal-body">
+  <aside class="portal-side">
+    <div class="label">Your progress</div>
+    <div class="progress"><i id="progress-fill"></i></div>
+    <div class="muted small"><span id="progress-count">0</span> of <span id="progress-total">0</span> answered</div>
+    <ol class="steps">{{!steps}}</ol>
+    <div class="hint-box">Unknown is a fine answer. It tells the security team what to ask next.</div>
+  </aside>
+  <main class="portal-main">
+    <div class="eyebrow">Requested by {{team}}</div>
+    <h1>Security review for {{vendor}}</h1>
+    <div class="who-asks">
+      <p><strong>{{org}}</strong> uses RiskPrism to run its vendor security reviews, which is why this form is on {{portal_host}}. {{sent_by}}</p>
+      <p>Please complete it by <strong>{{expires}}</strong>; the link stops working after that. {{check}}</p>
+    </div>
+    <p class="lede">Complete what you can. Do not paste passwords or production secrets. Submitting writes your answers into the security record kept by {{team}}, and a person reviews them before any risk decision is signed.</p>
+    <div class="meta">
+      <div><div class="label">Delivery</div><div>{{mode}}</div></div>
+      <div><div class="label">Website</div><div>{{url}}</div></div>
+      <div><div class="label">Your security contact on file</div><div>{{contact}}</div></div>
+      <div><div class="label">Link works until</div><div>{{expires}}</div></div>
+    </div>
+    {{!error}}
+    <form method="post" action="{{action}}" class="portal-form" id="portal-form"{{!enctype}}>
+      {{!fields}}
+      <div class="portal-actions">
+        <p class="muted small">You can reopen this link and change your answers until it expires. Each submission is kept, and the latest one is used.</p>
+        <button class="btn dark" type="submit">Submit for review</button>
+      </div>
+    </form>
+  </main>
+</div>
+</body>
+</html>

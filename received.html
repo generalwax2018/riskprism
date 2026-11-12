@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<meta name="robots" content="noindex, nofollow">
+<title>Received · {{vendor}}</title>
+<link rel="stylesheet" href="/static/app.css">
+</head>
+<body class="portal">
+<div class="portal-center">
+  <div class="app-icon lg"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 3.5 19.5 19h-17z"></path><path d="M1.5 12.5h5.2"></path><path d="M15.2 11.6 22 9M15.8 13.4l6.2 2.2"></path></svg></div>
+  <h1>Received. Thank you.</h1>
+  {{!notice}}
+  <p class="lede">Your answers for {{vendor}} are with {{team}}. A person will review them and may send follow-up questions.</p>
+  <p class="muted">You can reopen your link to correct an answer until {{expires}}.</p>
+  <p><a class="btn dark" href="/q/{{token}}">Review or change my answers</a></p>
+</div>
+</body>
+</html>

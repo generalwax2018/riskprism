@@ -1,0 +1,16 @@
+<header class="page-head"><div>
+  <h1>Customer policy</h1>
+  <p class="lede">This tenant's rules. Restricted names are theirs, not RiskPrism's catalog. One line per item.</p>
+</div></header>
+{{!ok}}
+<form method="post" action="/policy" class="form narrow">
+  <fieldset>
+    <label for="p-models">Restricted model names (matched anywhere in the vendor's model list)</label>
+    <textarea id="p-models" name="restricted_models" rows="8">{{models}}</textarea>
+    <label for="p-regions">Restricted regions (whole words, only used when data is critical)</label>
+    <textarea id="p-regions" name="restricted_regions" rows="6">{{regions}}</textarea>
+    <label>Require a region when data is critical</label>
+    {{!sel_required}}
+  </fieldset>
+  <button class="btn primary" type="submit">Save policy</button>
+</form>

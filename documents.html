@@ -1,0 +1,26 @@
+<header class="page-head">
+  <div>
+    <h1>Documents</h1>
+    <p class="lede">Every report and certificate on file for this workspace's vendors. Received is not reviewed: a SOC 2 nobody read is not evidence.</p>
+  </div>
+</header>
+
+<section class="kpis" aria-label="Summary">
+  <div class="kpi"><div class="label">On file</div><div class="num">{{n_total}}</div></div>
+  <div class="kpi"><div class="label">Not reviewed</div><div class="num warn-text">{{n_unreviewed}}</div></div>
+  <div class="kpi"><div class="label">Expired</div><div class="num danger-text">{{n_expired}}</div></div>
+  <div class="kpi"><div class="label">Expiring in 30 days</div><div class="num">{{n_expiring}}</div></div>
+</section>
+
+<form method="get" action="/documents" class="filters">
+  <div><label for="d-q">Search</label><input id="d-q" name="q" value="{{q}}" placeholder="Vendor, file name or description"></div>
+  <div><label>Type</label>{{!sel_type}}</div>
+  <div><label>Status</label>{{!sel_status}}</div>
+  <div class="filters-go"><button class="btn ghost" type="submit">Filter</button> <a class="gold small" href="/documents">Clear</a></div>
+</form>
+
+<section class="card flush">
+  <div class="card-head padded"><h2>Library</h2><span class="muted small">{{shown}} shown, newest first</span></div>
+  <div class="row head drow"><div>File and vendor</div><div>Type and period</div><div>Status</div><div>Review</div></div>
+  {{!rows}}
+</section>

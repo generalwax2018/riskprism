@@ -1,0 +1,33 @@
+<header class="page-head">
+  <div>
+    <h1>Renewals and evidence</h1>
+    <p class="lede">SOC 2, pentest and review clocks in one grid. Anything red is already late. Send the renewal pack from the row.</p>
+  </div>
+  <div class="head-actions">{{!seed_button}}</div>
+</header>
+
+<section class="kpis" aria-label="Summary">
+  <div class="kpi"><div class="label">High flags</div><div class="num danger-text">{{high}}</div></div>
+  <div class="kpi"><div class="label">Medium flags</div><div class="num warn-text">{{med}}</div></div>
+  <div class="kpi"><div class="label">Vendors flagged</div><div class="num">{{flagged}}</div></div>
+  <div class="kpi"><div class="label">Waiting on vendor</div><div class="num">{{waiting}}</div></div>
+</section>
+
+<section class="card flush">
+  <div class="card-head padded"><h2>Evidence clocks</h2><span class="muted small">Red is late, amber is inside 90 days, green is clear</span></div>
+  <div class="row head crow"><div>Vendor</div><div>SOC 2 / ISO</div><div>Pentest</div><div>Next review</div><div>Model list</div><div></div></div>
+  {{!clock_rows}}
+</section>
+
+<section class="table-section">
+  <div class="toolbar">
+    <h2>Flag queue</h2>
+    <div class="chips" role="group" aria-label="Filter flags">
+      <button class="chipbtn on" type="button" data-sev-filter="all">All <span class="mono">{{n_flags}}</span></button>
+      <button class="chipbtn" type="button" data-sev-filter="high">High <span class="mono">{{n_high}}</span></button>
+      <button class="chipbtn" type="button" data-sev-filter="medium">Medium <span class="mono">{{n_med}}</span></button>
+      <button class="chipbtn" type="button" data-sev-filter="accepted">Accepted <span class="mono">{{n_accepted}}</span></button>
+    </div>
+  </div>
+  <div class="sheet" id="flag-rows">{{!flag_rows}}</div>
+</section>

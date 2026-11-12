@@ -1,0 +1,15 @@
+<nav class="crumbs" aria-label="Breadcrumb"><a class="gold" href="/documents">Documents</a><span aria-hidden="true">/</span><a class="gold" href="/vendor/{{slug}}">{{vendor}}</a></nav>
+<header class="page-head"><div>
+  <h1>Documents: {{vendor}}</h1>
+  <p class="lede">SOC reports, pentests, certificates and contracts for this vendor. Files are checked, fingerprinted (SHA-256) and stored privately; only signed-in analysts can download them. Allowed: {{exts}}. Azure storage: {{azure}}</p>
+</div></header>
+{{!error}}
+<section class="card">
+  <div class="card-head"><h2>Upload</h2><span class="muted small">A SOC or pentest with a valid-until date moves that evidence clock forward</span></div>
+  {{!upload}}
+</section>
+<section class="card flush">
+  <div class="card-head padded"><h2>Stored</h2><span class="muted small">Received is not reviewed: nothing turns green until someone records a review</span></div>
+  <div class="row head drow"><div>File</div><div>Type and period</div><div>Status</div><div>Review</div></div>
+  {{!files}}
+</section>

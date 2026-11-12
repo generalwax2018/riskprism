@@ -1,0 +1,16 @@
+<header class="page-head"><div>
+  <h1>Report a tool</h1>
+  <p class="lede">For teams that already use something security has never seen. It lands as not authorized. If the tool is already in the portfolio, your report is added to it and nothing else changes.</p>
+</div></header>
+{{!error}}
+<form method="post" action="/report" class="form narrow">
+  <fieldset>
+    <label for="r-vendor">Tool / vendor name</label><input id="r-vendor" name="vendor" required maxlength="200" value="{{v_vendor}}">
+    <label for="r-web">Website</label><input id="r-web" name="website" maxlength="300" value="{{v_website}}">
+    <label>How we found it</label>{{!sel_found}}
+    <label for="r-owner">Who uses it</label><input id="r-owner" name="owner" maxlength="200" value="{{v_owner}}">
+    <label for="r-biz">What it is used for</label><input id="r-biz" name="business" maxlength="300" value="{{v_business}}">
+    <label for="r-notes">Notes</label><textarea id="r-notes" name="notes" maxlength="4000">{{v_notes}}</textarea>
+  </fieldset>
+  <button class="btn primary" type="submit">Add as unreviewed</button>
+</form>

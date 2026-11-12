@@ -1,0 +1,20 @@
+vendor,AI-01,AI-02,AI-03,AI-04,AI-05,AI-06,AI-07,AI-08,AI-09,AI-10,AI-11,AI-12,AI-13,AI-14,AI-15,AI-16
+Microsoft 365,Partial,Pass,Partial,Pass,Pass,Pass,Partial,Pass,Partial,Partial,Pass,Pass,Pass,Pass,Pass,Pass
+Okta,n/a,Pass,Pass,n/a,n/a,Pass,n/a,Pass,n/a,n/a,Pass,Pass,Pass,Pass,Pass,Pass
+AWS,n/a,Pass,Pass,n/a,n/a,Pass,n/a,Pass,n/a,n/a,Pass,Pass,Pass,Pass,Pass,Pass
+GitHub,Partial,Partial,Partial,Pass,Pass,Pass,Partial,Pass,Partial,Partial,Partial,Pass,Pass,Pass,Pass,Pass
+Stripe,Pass,Pass,Pass,Pass,Pass,Pass,Pass,Pass,n/a,n/a,Pass,Pass,Pass,Pass,Pass,Pass
+Salesforce,Partial,Partial,Unknown,Pass,Partial,Pass,Unknown,Pass,Unknown,Partial,Partial,Pass,Pass,Pass,Pass,Pass
+Zendesk,Partial,Partial,Unknown,Pass,Unknown,Pass,Unknown,Pass,Unknown,Partial,Unknown,Pass,Pass,Pass,Pass,Partial
+Gusto,n/a,Pass,Pass,n/a,n/a,Pass,n/a,Pass,n/a,n/a,Pass,Pass,Pass,Pass,Pass,Pass
+Datadog,n/a,Pass,Pass,n/a,n/a,Pass,n/a,Pass,n/a,n/a,Pass,Pass,Pass,Pass,Pass,Pass
+OpenAI,Pass,Pass,Pass,Pass,Pass,Pass,Partial,Pass,Partial,Partial,Partial,Pass,Pass,Pass,Partial,Pass
+Otter.ai,Partial,Partial,Unknown,Pass,Unknown,Partial,Unknown,Unknown,Unknown,Fail,Unknown,Partial,Pass,Pass,Partial,Partial
+Notion,Partial,Partial,Unknown,Pass,Unknown,Partial,Unknown,Unknown,Unknown,Partial,Unknown,Partial,Pass,Pass,Pass,Partial
+HubSpot,Partial,Partial,Unknown,Pass,Unknown,Pass,Unknown,Pass,Unknown,Partial,Unknown,Pass,Pass,Pass,Pass,Partial
+1Password,n/a,Pass,Pass,n/a,n/a,Pass,n/a,Pass,n/a,n/a,Pass,Pass,Pass,Pass,Pass,Pass
+CrowdStrike,n/a,Pass,Pass,n/a,n/a,Pass,n/a,Pass,n/a,n/a,Pass,Pass,Pass,Pass,Pass,Pass
+Slack,Partial,Partial,Partial,Pass,Pass,Pass,Partial,Pass,Partial,Partial,Partial,Pass,Pass,Pass,Pass,Pass
+Figma,n/a,Pass,Pass,n/a,n/a,Pass,n/a,n/a,n/a,n/a,n/a,Pass,Pass,Pass,Pass,Pass
+Mailchimp,n/a,Pass,Pass,n/a,n/a,Pass,n/a,n/a,n/a,n/a,n/a,Pass,Pass,Pass,Pass,Partial
+Unknown Shadow Copilot,Unknown,Unknown,Unknown,Unknown,Unknown,Unknown,Unknown,Unknown,Unknown,Fail,Unknown,Unknown,Fail,Unknown,Fail,Unknown

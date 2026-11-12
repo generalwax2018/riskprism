@@ -1,0 +1,42 @@
+<header class="page-head"><div>
+  <h1>{{title}}</h1>
+  <p class="lede">{{lede}}</p>
+</div></header>
+{{!error}}
+<form method="post" action="{{action}}" class="form narrow">
+  {{!hidden}}
+  <fieldset><legend>Who</legend>
+    <div class="row2">
+      <div><label for="f-vendor">Vendor name</label><input id="f-vendor" name="vendor" required maxlength="200" value="{{v_vendor}}"></div>
+      <div><label>Delivery</label>{{!sel_mode}}</div>
+    </div>
+    <div class="row2">
+      <div><label for="f-website">Website</label><input id="f-website" name="website" maxlength="300" value="{{v_website}}"></div>
+      <div><label for="f-contact">Security contact</label><input id="f-contact" name="contact" maxlength="200" value="{{v_contact}}"></div>
+    </div>
+    <label for="f-business">Business context</label><input id="f-business" name="business" maxlength="300" value="{{v_business}}">
+    <label for="f-owner">Internal owner</label><input id="f-owner" name="owner" maxlength="200" value="{{v_owner}}">
+  </fieldset>
+  <fieldset><legend>Review posture</legend>
+    <div class="row2">
+      <div><label>Authorization</label>{{!sel_auth}}</div>
+      <div><label>Stage</label>{{!sel_stage}}</div>
+    </div>
+  </fieldset>
+  <fieldset><legend>Integrations if known</legend>
+    <div class="row2">
+      <div><label>Will it connect to our systems or SaaS tenants?</label>{{!sel_connects}}</div>
+      <div><label>Category</label>{{!sel_category}}</div>
+      <div><label for="f-connects-to">Which systems?</label><input id="f-connects-to" name="connects_to" maxlength="300" value="{{v_connects_to}}" placeholder="e.g. Microsoft 365, ServiceNow"></div>
+    </div>
+    <p class="muted small">The vendor questionnaire always asks how it connects. Record each connection on the vendor's Integrations tab.</p>
+  </fieldset>
+  <fieldset><legend>AI if known</legend>
+    <div class="row2">
+      <div><label>Model on our content?</label>{{!sel_ai_used}}</div>
+      <div><label>Trains on customer content?</label>{{!sel_ai_train}}</div>
+    </div>
+  </fieldset>
+  <fieldset><legend>Notes</legend><textarea name="notes" maxlength="4000" aria-label="Notes">{{v_notes}}</textarea></fieldset>
+  <button class="btn primary" type="submit">{{button}}</button>
+</form>

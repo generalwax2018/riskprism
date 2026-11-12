@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<meta name="robots" content="noindex, nofollow">
+<title>Sign in · RiskPrism</title>
+<link rel="stylesheet" href="/static/app.css">
+</head>
+<body class="login">
+<form method="post" action="/login" class="login-card">
+  <div class="app-icon lg"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 3.5 19.5 19h-17z"></path><path d="M1.5 12.5h5.2"></path><path d="M15.2 11.6 22 9M15.8 13.4l6.2 2.2"></path></svg></div>
+  <h1>Sign in</h1>
+  <p class="muted">RiskPrism vendor security. Analysts only.</p>
+  <input type="hidden" name="_csrf" value="{{csrf}}">
+  {{!sso}}
+  {{!fields}}
+  <p class="login-error" role="alert">{{error}}</p>
+  <button class="btn primary" type="submit" {{!hide_submit}}>Sign in</button>
+</form>
+</body>
+</html>

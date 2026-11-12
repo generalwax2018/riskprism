@@ -1,0 +1,20 @@
+<header class="page-head"><div>
+  <h1>Import names</h1>
+  <p class="lede">Paste CSV with a header row. Columns: vendor (or name), website, owner, business. Existing vendors keep their answers, evidence and history.</p>
+</div></header>
+{{!error}}{{!ok}}
+<form method="post" action="/import" class="form narrow">
+  <textarea name="csv" rows="12" maxlength="200000" placeholder="vendor,website,owner" aria-label="CSV text"></textarea>
+  <p><button class="btn primary" type="submit">Import</button></p>
+</form>
+
+<header class="page-head"><div>
+  <h2>Import Entra users</h2>
+  <p class="lede">In Entra ID, open Users, choose Download users, and upload the CSV. Only the department column is read and no people are stored. Departments you have not seen before become org units flagged for review on the Org units page. The import still runs when some departments are unmapped.</p>
+</div></header>
+<form method="post" action="/import/entra" enctype="multipart/form-data" class="form narrow">
+  <input type="file" name="file" accept=".csv,text/csv" required aria-label="Entra users CSV">
+  <p><button class="btn primary" type="submit">Import departments</button></p>
+</form>
+
+{{!access_form}}

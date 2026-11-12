@@ -1,0 +1,27 @@
+<header class="page-head"><div>
+  <h1>People</h1>
+  <p class="lede">Everyone who can sign in to this RiskPrism. Each person has their own password and authenticator app, so notes, reviews and acceptances name who did them.</p>
+</div><div class="head-actions"><a class="btn ghost" href="/admin/orgs">Org units and approvers</a></div></header>
+{{!error}}{{!ok}}
+{{!link}}
+
+<section class="card flush">
+  <div class="card-head padded"><h2>Accounts</h2><span class="muted small">{{n_active}} active · {{n_invited}} invited · {{n_disabled}} disabled</span></div>
+  <div class="row head peoprow"><div>Person</div><div>Status</div><div>Last sign-in</div><div>Actions</div></div>
+  {{!rows}}
+</section>
+
+<section class="card narrow-card"><div class="card-head"><h2>Invite someone</h2></div>
+  <form method="post" action="/people" class="form">
+    <input type="hidden" name="action" value="invite">
+    <label for="p-email">Work email</label><input id="p-email" name="email" type="email" required maxlength="200">
+    <label for="p-name">Name</label><input id="p-name" name="name" maxlength="120">
+    <label for="p-role">Access</label>
+    <select id="p-role" name="role">
+      <option value="analyst">Analyst (can make changes)</option>
+      <option value="admin">Admin (also manages people, org units, approvers and data)</option>
+      <option value="viewer">View only (can read and export, cannot change anything)</option>
+    </select>
+    {{!mail_option}}
+  </form>
+</section>

@@ -1,0 +1,15 @@
+<header class="page-head"><div>
+  <h1>Your account</h1>
+  <p class="lede">{{email}}{{admin}}</p>
+</div></header>
+{{!error}}{{!ok}}
+<section class="card narrow-card"><div class="card-head"><h2>Change password</h2></div>
+  <form method="post" action="/account" class="form keep">
+    <label for="a-cur">Current password</label><input id="a-cur" type="password" name="current" autocomplete="current-password" required>
+    <label for="a-new">New password</label><input id="a-new" type="password" name="password" minlength="12" maxlength="200" autocomplete="new-password" required>
+    <label for="a-new2">New password again</label><input id="a-new2" type="password" name="password2" minlength="12" maxlength="200" autocomplete="new-password" required>
+    <label for="a-code">Code from your authenticator app</label><input id="a-code" name="code" inputmode="numeric" maxlength="7" autocomplete="one-time-code" required>
+    <p><button class="btn primary" type="submit">Change password</button></p>
+    <p class="muted small">Changing your password signs you out on every other device. Lost your phone? Ask an admin to reset your sign-in.</p>
+  </form>
+</section>

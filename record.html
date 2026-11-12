@@ -1,0 +1,67 @@
+<nav class="crumbs" aria-label="Breadcrumb"><a class="gold" href="/">Portfolio</a><span aria-hidden="true">/</span><span>{{vendor}}</span></nav>
+
+<header class="page-head">
+  <div>
+    <h1 class="big">{{vendor}}</h1>
+    <p class="lede tight">{{sub}}</p>
+    <div class="chips-line">{{!chips}}</div>
+  </div>
+  <div class="head-actions wrap">{{!actions}}</div>
+</header>
+{{!error}}{{!ok}}
+{{!banner}}
+
+<nav class="tabs" role="tablist" aria-label="Record sections">
+  <button class="tab{{!on_overview}}" type="button" role="tab" data-tab="overview" aria-selected="{{!sel_overview}}">Overview</button>
+  <button class="tab{{!on_questionnaire}}" type="button" role="tab" data-tab="questionnaire" aria-selected="{{!sel_questionnaire}}">Questionnaire</button>
+  <button class="tab{{!on_integrations}}" type="button" role="tab" data-tab="integrations" aria-selected="{{!sel_integrations}}">Integrations</button>
+  <button class="tab{{!on_controls}}" type="button" role="tab" data-tab="controls" aria-selected="{{!sel_controls}}">Controls</button>
+  <button class="tab{{!on_threat}}" type="button" role="tab" data-tab="threat" aria-selected="{{!sel_threat}}">Threat model</button>
+  <button class="tab{{!on_activity}}" type="button" role="tab" data-tab="activity" aria-selected="{{!sel_activity}}">Activity</button>
+</nav>
+
+<div class="panel" data-panel="overview"{{!hide_overview}}>
+  <div class="two-col wide-left">
+    <div class="stack">
+      <section class="card"><div class="card-head"><h2>Evidence clocks</h2></div>{{!clocks}}</section>
+      <section class="card" id="documents"><div class="card-head"><h2>Documents</h2><a class="gold small" href="/evidence/{{slug}}">All for this vendor</a></div>{{!docs}}</section>
+      <section class="card"><div class="card-head"><h2>Live access</h2><span class="muted small">{{access_synced}}</span></div>{{!access}}</section>
+      <section class="card"><div class="card-head"><h2>Inherent risk</h2><span class="mono gold">{{inh_score}} / 100</span></div>{{!risk}}</section>
+      <section class="card {{!controls_class}}"><div class="card-head"><h2>AI controls</h2></div>{{!controls}}</section>
+    </div>
+    <div class="stack">
+      <section class="card"><div class="card-head"><h2>Open issues</h2></div>{{!issues}}</section>
+      <section class="card" id="notes"><div class="card-head"><h2>Analyst notes</h2><span class="muted small">Permanent, signed, newest first</span></div>{{!notes}}</section>
+      <section class="card" id="risk-acceptance"><div class="card-head"><h2>Risk acceptance</h2><a class="gold small" href="/risk">All acceptances</a></div>
+        {{!accept}}
+      </section>
+      <section class="card"><div class="card-head"><h2>Factsheet and gaps</h2></div><pre class="facts">{{facts}}</pre>
+        <form method="post" action="/parse" class="inline"><input type="hidden" name="slug" value="{{slug}}"><button class="btn ghost small-btn" type="submit">Rebuild factsheet and flags</button></form>
+      </section>
+      {{!danger}}
+    </div>
+  </div>
+</div>
+
+<div class="panel" data-panel="questionnaire"{{!hide_questionnaire}}>
+  <div class="two-col wide-left">
+    <section class="card"><div class="card-head"><h2>Latest answers</h2></div>{{!answers}}</section>
+    <section class="card"><div class="card-head"><h2>Submissions</h2></div>{{!submissions}}</section>
+  </div>
+</div>
+
+<div class="panel" data-panel="integrations" id="integrations"{{!hide_integrations}}>
+  {{!integrations}}
+</div>
+
+<div class="panel" data-panel="controls" id="controls"{{!hide_controls}}>
+  {{!ctl_tab}}
+</div>
+
+<div class="panel" data-panel="threat" id="threat"{{!hide_threat}}>
+  {{!threat}}
+</div>
+
+<div class="panel" data-panel="activity"{{!hide_activity}}>
+  <section class="card flush"><div class="card-head padded"><h2>Activity</h2><span class="muted small">Every change, with who made it</span></div>{{!activity}}</section>
+</div>

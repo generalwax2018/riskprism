@@ -1,0 +1,55 @@
+<header class="page-head"><div>
+  <h1>Org units</h1>
+  <p class="lede">Who owns risk, and who may accept it. Entra departments map to units through the strings below. Saving a unit marks it reviewed.</p>
+</div><div class="head-actions"><a class="btn ghost" href="/import">Import Entra users</a><a class="btn ghost" href="/risk">Acceptances by unit</a></div></header>
+{{!error}}{{!ok}}
+
+<section class="kpis" aria-label="Summary">
+  <div class="kpi"><div class="label">Units</div><div class="num">{{n_units}}</div></div>
+  <div class="kpi"><div class="label">Need review</div><div class="num warn-text">{{n_review}}</div></div>
+  <div class="kpi"><div class="label">No accountable owner</div><div class="num warn-text">{{n_no_owner}}</div></div>
+  <div class="kpi"><div class="label">Approvers</div><div class="num">{{n_approvers}}</div></div>
+</section>
+
+<section class="card flush">
+  <div class="card-head padded"><h2>Units</h2><span class="muted small">Name, parent and accountable owner</span></div>
+  <div class="row head urow"><div>Unit</div><div>Parent</div><div>Accountable owner</div><div>Status</div><div></div></div>
+  {{!unit_rows}}
+</section>
+
+<div class="two-col">
+  <section class="card"><div class="card-head"><h2>Add a unit</h2></div>
+    <form method="post" action="/admin/unit" class="form">
+      <label>Name</label><input name="name" required maxlength="120">
+      <label>Parent</label><select name="parent_id">{{!parent_options}}</select>
+      <label>Accountable owner</label><input name="owner" maxlength="200" placeholder="name@example.com">
+      <p><button class="btn primary" type="submit">Add unit</button></p>
+    </form>
+  </section>
+  <section class="card"><div class="card-head"><h2>Merge units</h2></div>
+    <p class="muted small">Folds the first unit into the second. Its department strings and child units move across. Signed acceptances keep the unit they were signed for and roll up to the new one.</p>
+    <form method="post" action="/admin/merge" class="form">
+      <label>Merge this unit</label><select name="from_id" required>{{!merge_options}}</select>
+      <label>Into this unit</label><select name="into_id" required>{{!merge_options}}</select>
+      <p><button class="btn ghost" type="submit">Merge</button></p>
+    </form>
+  </section>
+</div>
+
+<section class="card flush">
+  <div class="card-head padded"><h2>Entra department strings</h2><span class="muted small">Point a string at a different unit to merge aliases</span></div>
+  <div class="row head alrow"><div>Department as Entra spells it</div><div>Unit</div><div></div></div>
+  {{!alias_rows}}
+</section>
+
+<section class="card flush">
+  <div class="card-head padded"><h2>Approvers</h2><span class="muted small">Low and Medium: director or above. High and Critical: VP or CISO.</span></div>
+  <div class="row head aprow"><div>Sign-in name</div><div>Level</div><div>Set by</div><div></div></div>
+  {{!approver_rows}}
+  <form method="post" action="/admin/approver" class="row aprow">
+    <input name="principal" required maxlength="200" placeholder="name@example.com" aria-label="Sign-in name">
+    {{!level_select}}
+    <span class="muted small">{{self_note}}</span>
+    <button class="btn primary small-btn" type="submit">Save</button>
+  </form>
+</section>

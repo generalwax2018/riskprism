@@ -1,0 +1,55 @@
+<header class="page-head">
+  <div>
+    <h1>Portfolio</h1>
+    <p class="lede">Every tool in the environment, scored against Methodology v0.1. Residual risk needs a named human whenever it lands at T1 or T2.</p>
+  </div>
+  <div class="head-actions">
+    <a class="btn ghost" href="/import">Import CSV</a>
+    <a class="btn primary" href="/intake">+ New vendor</a>
+  </div>
+</header>
+
+<section class="kpis" aria-label="Summary">
+  <div class="kpi"><div class="label">Vendors</div><div class="num">{{kpi_total}}</div><div class="muted small">in the environment</div></div>
+  <div class="kpi"><div class="label">Waiting on a human</div><div class="num">{{kpi_human}}</div><div class="muted small">T1 / T2 residual or auto-high fail</div></div>
+  <div class="kpi"><div class="label">AI in scope</div><div class="num">{{kpi_ai}}</div><div class="muted small">a model touches company data</div></div>
+  <div class="kpi"><div class="label">Residual T1</div><div class="num danger-text">{{kpi_t1}}</div><div class="muted small">still critical after controls</div></div>
+</section>
+
+<section class="two-col">
+  <div class="card">
+    <div class="card-head"><h2>Where the risk sits</h2><span class="muted small">Controls move risk down, unknowns push it up</span></div>
+    <div class="bars">
+      <div class="bar-row"><div class="muted small">Inherent</div><div class="bar">{{!inh_bar}}</div></div>
+      <div class="bar-row"><div class="muted small">Residual</div><div class="bar">{{!res_bar}}</div></div>
+    </div>
+    <div class="legend">
+      <span><i class="sw t1"></i>T1 Critical</span><span><i class="sw t2"></i>T2 High</span><span><i class="sw t3"></i>T3 Moderate</span><span><i class="sw t4"></i>T4 Low</span>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-head"><h2>Needs you now</h2><a class="gold small" href="/alerts">All flags</a></div>
+    {{!attention}}
+  </div>
+</section>
+
+<section class="table-section">
+  <div class="toolbar">
+    <div class="chips" role="group" aria-label="Filter vendors">
+      <button class="chipbtn on" type="button" data-filter="all">All <span class="mono">{{n_all}}</span></button>
+      <button class="chipbtn" type="button" data-filter="t1">Residual T1 <span class="mono">{{n_t1}}</span></button>
+      <button class="chipbtn" type="button" data-filter="ai">AI in scope <span class="mono">{{n_ai}}</span></button>
+      <button class="chipbtn" type="button" data-filter="human">Human gate <span class="mono">{{n_human}}</span></button>
+      <button class="chipbtn" type="button" data-filter="auto">Auto-close <span class="mono">{{n_auto}}</span></button>
+    </div>
+    <label class="search"><span class="sr">Search vendors</span>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-3.5-3.5"></path></svg>
+      <input id="vendor-search" type="search" placeholder="Search vendor or product" autocomplete="off">
+    </label>
+  </div>
+  <div class="sheet">
+    <div class="row head prow"><div>Vendor</div><div>Inherent</div><div>Residual</div><div>AI</div><div>Decision</div><div></div></div>
+    <div id="vendor-rows">{{!rows}}</div>
+    <p id="no-match" class="muted pad" hidden>No vendors match. Clear the search or pick another filter.</p>
+  </div>
+</section>
