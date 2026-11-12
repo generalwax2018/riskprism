@@ -37,19 +37,56 @@ The interface follows your system's light or dark setting. What is built and wha
 
 Settings are environment variables named `ENTROPY_*` (the project's earlier name). They stay that way so existing installs keep working.
 
-## Run on your laptop
+## Requirements
 
-Python 3.10 or newer. No packages to install.
+- **Python 3.10 or newer** (3.12 recommended). Nothing to `pip install`: RiskPrism uses the standard library only.
+- **Windows, macOS or Linux**, and a current browser (Chrome, Edge, Firefox or Safari).
+- **Disk:** a few MB for the app, plus room for your data and the documents people upload.
+- **For a team:** one server reachable over HTTPS. A small Linux VM is enough (1 vCPU, 1 GB RAM); Docker and Azure App Service also work. Run **one instance** per organisation.
+- **Optional:** an SMTP server for email, an API key for any OpenAI-compatible model for the AI questionnaire (or run with `ENTROPY_AI=off`), ServiceNow or Jira for tickets, and an OpenID Connect provider (Entra ID, Okta, Google) for single sign-on.
+
+## Install and run
+
+### Try it on your laptop
+
+1. Install Python if you do not have it (`python3 --version` or, on Windows, `python --version` tells you):
+   - **Windows:** the installer from [python.org](https://www.python.org/downloads/) (tick **Add python.exe to PATH**), or `winget install Python.Python.3.12`.
+   - **macOS:** the installer from [python.org](https://www.python.org/downloads/), or `brew install python`.
+   - **Linux:** usually already there; otherwise `sudo apt install python3` (Debian, Ubuntu) or `sudo dnf install python3` (Fedora, RHEL).
+2. Get the code: `git clone https://github.com/generalwax2018/riskprism.git`, or **Code → Download ZIP** on GitHub and unzip it.
+3. Start it from the `riskprism` folder:
+
+   ```bash
+   cd riskprism
+   python3 serve.py        # Windows: python serve.py
+   ```
+
+4. Open http://127.0.0.1:8765 and follow **What to click first** below.
+
+On a laptop it listens on 127.0.0.1 only and needs no login. Your data goes into a `data` folder next to the code. Stop it with Ctrl+C. To use another port: `ENTROPY_PORT=8800 python3 serve.py` (PowerShell: `$env:ENTROPY_PORT="8800"; python serve.py`).
+
+Run the tests with `python3 -m unittest discover -s tests -v`. They use a temporary folder and need no network.
+
+### Run with Docker
 
 ```bash
-git clone https://github.com/generalwax2018/riskprism.git
-cd riskprism
-python3 serve.py        # on Windows: python serve.py
+docker build -t riskprism .
+docker run -d --name riskprism --restart unless-stopped \
+  -p 127.0.0.1:8765:8765 -v riskprism-data:/data \
+  -e ENTROPY_AUTH=accounts -e ENTROPY_BASE_URL=https://riskprism.yourco.example \
+  riskprism
+docker exec riskprism python accounts.py invite you@yourco.example --admin --name "Your Name"
 ```
 
-Open http://127.0.0.1:8765. On a laptop it binds to loopback with no login. Anything else needs sign-in, see below.
+The last command prints a one-time link for the first admin: open it, set a password and add an authenticator app. Data, including `secret.key`, lives in the `riskprism-data` volume. Put an HTTPS reverse proxy (Caddy, nginx, a cloud load balancer) in front before anyone else uses it, and set `ENTROPY_BASE_URL` to that address.
 
-Run the tests: `python -m unittest discover -s tests -v`
+### Run on a server for your team
+
+[docs/INSTALL.md](docs/INSTALL.md) has the steps for any Linux server: the app as a systemd service on 127.0.0.1, Caddy for HTTPS, per-person accounts, the first admin, updates and backups. For Azure (App Service with Entra sign-in, or a VM) see [docs/AZURE_DEPLOY.md](docs/AZURE_DEPLOY.md).
+
+### Before real use
+
+Sign in as an admin, set your organisation name and security contact under **Your environment**, then **Data and audit → Remove sample data**. Keep a copy of `secret.key` from the data folder somewhere safe (see **Backups, export and delete**).
 
 ## What to click first
 
@@ -180,7 +217,7 @@ The page also shows the audit log's entry count and latest seal, with **Check th
 
 ## Deploy
 
-See [docs/AZURE_DEPLOY.md](docs/AZURE_DEPLOY.md) for App Service (Entra sign-in) and a small VM behind Caddy. A `Dockerfile` is included. Run **one instance** only.
+Any Linux server: [docs/INSTALL.md](docs/INSTALL.md). Azure App Service or an Azure VM: [docs/AZURE_DEPLOY.md](docs/AZURE_DEPLOY.md). Docker: see **Run with Docker** above. Run **one instance** only.
 
 ## Docs
 
@@ -190,6 +227,7 @@ See [docs/AZURE_DEPLOY.md](docs/AZURE_DEPLOY.md) for App Service (Entra sign-in)
 | [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | Process, modules, request flow, routes |
 | [docs/WORKFLOWS.md](docs/WORKFLOWS.md) | Find → Clock → Ask less → Compare → Sign or stop |
 | [docs/DATA_MODEL.md](docs/DATA_MODEL.md) | Files on disk and vendor JSON fields |
+| [docs/INSTALL.md](docs/INSTALL.md) | Install on any Linux server: systemd, Caddy, accounts, updates |
 | [docs/AZURE_DEPLOY.md](docs/AZURE_DEPLOY.md) | Azure deployment |
 | [docs/AZURE.md](docs/AZURE.md) | Azure cost and isolation summary |
 | [docs/STATUS.md](docs/STATUS.md) | What is in and out |

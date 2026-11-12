@@ -81,6 +81,8 @@ How `easyauth` mode works: App Service authenticates the user and forwards the i
 
 ## Path B: one small VM (cheap, more to look after)
 
+The same steps work on any Linux server; [INSTALL.md](INSTALL.md) is the provider-neutral version, with per-person accounts from the start.
+
 Expected bill for a Standard_B1s Linux VM in East US or West US 2 left running all month is about $8, plus disk and IP. Stop the VM when nobody is testing.
 
 1. Create an Ubuntu 24.04 VM (Standard_B1s), SSH key only. Open only 22 (from your IP) and 443.
@@ -108,7 +110,7 @@ EOF
 sudo chmod 600 /etc/entropy/entropy.env
 ```
 
-On an existing VM, `systemctl cat entropy` shows which settings file the service actually reads (its `EnvironmentFile=` line). The examples here use `/etc/entropy.env`.
+On an existing VM, `systemctl cat entropy` shows which settings file the service actually reads (its `EnvironmentFile=` line). The examples here use `/etc/entropy/entropy.env`.
 
 4. Service:
 
@@ -161,7 +163,7 @@ The git repository uses one branch, `main`. To deploy:
 cd /home/azureuser/riskprism && git pull && python3 -m unittest discover -s tests && sudo systemctl restart entropy
 ```
 
-Run the tests before the restart. They use a temporary data folder, not the live one. The suite is 281 tests; `tests/test_pilot.py` starts the real server on an empty data folder. If a test fails, do not restart; fix it first or `git checkout` the previous commit. Templates are read on each request, but Python modules load once, so the restart is needed after any `.py` change.
+Run the tests before the restart. They use a temporary data folder, not the live one. The suite is 283 tests; `tests/test_pilot.py` starts the real server on an empty data folder. If a test fails, do not restart; fix it first or `git checkout` the previous commit. Templates are read on each request, but Python modules load once, so the restart is needed after any `.py` change.
 
 ### Switching a VM to per-person accounts
 
@@ -170,7 +172,7 @@ Run the tests before the restart. They use a temporary data folder, not the live
 
 ```bash
 cd ~/riskprism
-set -a; source <(sudo cat /etc/entropy.env); set +a
+set -a; source <(sudo cat /etc/entropy/entropy.env); set +a
 python3 accounts.py invite you@example.com --admin --name "Your Name"
 ```
 
@@ -225,7 +227,7 @@ Run as the service user with the service's settings, as in **Switching a VM to p
 ```bash
 sudo systemctl stop entropy
 cd ~/riskprism
-set -a; source <(sudo cat /etc/entropy.env); set +a
+set -a; source <(sudo cat /etc/entropy/entropy.env); set +a
 # new VM? copy your saved secret.key into the data folder first (a new server makes its own key, which will not match)
 python3 ops.py restore /mnt/riskprism-backups/riskprism-YYYYMMDD-HHMMSS.tar.gz --force
 sudo systemctl start entropy

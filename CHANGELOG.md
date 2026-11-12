@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+- README: requirements, and how to install and run on a laptop, with Docker and on a server.
+- `docs/INSTALL.md`: install on any Linux server (systemd, Caddy, per-person accounts, first admin, updates).
+- Docs: the Azure guide uses one settings-file path throughout; a test checks that links between docs resolve.
+
 ## 0.9.0 — 2026-11-11
 
 First public release, as open source under the MIT license. Beta: one instance per organisation.
@@ -14,6 +20,6 @@ First public release, as open source under the MIT license. Beta: one instance p
 - Tamper-evident audit log (HMAC seal chain in SQLite).
 - Optional email (vendor links, invites, weekly digest), nightly backups and restore, a full export, sample data removal and delete-all.
 - Glass interface that follows the system light or dark setting; no page loads anything from another host.
-- 281 tests.
+- 283 tests.
 
 Earlier history is in the git log.

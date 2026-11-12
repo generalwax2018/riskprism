@@ -75,6 +75,24 @@ class PublicRepoTests(unittest.TestCase):
             self.assertNotRegex(text, r"C:\\Users\\[A-Za-z]", path.name)
             self.assertNotIn("entropysecurity-tprm", text, path.name)  # the repo is github.com/generalwax2018/riskprism
 
+    def test_doc_links_resolve(self):
+        pages = [ROOT / "README.md", ROOT / "SECURITY.md", ROOT / "CONTRIBUTING.md", *sorted((ROOT / "docs").glob("*.md"))]
+        for page in pages:
+            for target in re.findall(r"\]\(([^)#\s]+)", page.read_text(encoding="utf-8")):
+                if re.match(r"[a-z]+:", target):
+                    continue
+                self.assertTrue((page.parent / target).exists(), "%s links to missing %s" % (page.name, target))
+
+    def test_readme_states_requirements_and_install(self):
+        readme = (ROOT / "README.md").read_text(encoding="utf-8")
+        for heading in ("## Requirements", "## Install and run", "### Try it on your laptop", "### Run with Docker",
+                        "### Run on a server for your team"):
+            self.assertIn(heading, readme)
+        self.assertIn("Python 3.10 or newer", readme)
+        workflow = ROOT / ".github" / "workflows" / "test.yml"
+        if workflow.exists():  # CI tests the oldest version the README promises
+            self.assertIn('"3.10"', workflow.read_text(encoding="utf-8"))
+
 
 if __name__ == "__main__":
     unittest.main()
